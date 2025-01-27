@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactos Agregados - Colegio Kinal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/ver-contactos.css">
+
+
+</head>
+<body>
+
+<section id="contactos-agregados" class="container my-5">
+    <h2 class="text-center mb-4">Contactos Agregados</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>ID</th>
+                <th>Correo Electrónico</th>
+                <th>Dirección</th>
+                <th>Acciones</th> 
+            </tr>
+        </thead>
+        <tbody id="contactos-lista">
+            
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        <a href="agregar_contacto.html" class="btn btn-secondary">Volver a Agregar Contacto</a>
+    </div>
+</section>
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const contacts = JSON.parse(localStorage.getItem('contacts')) || [];  
+
+        const contactosLista = document.getElementById('contactos-lista');  
+
+        
+        if (contacts.length === 0) {
+            contactosLista.innerHTML = '<tr><td colspan="6" class="text-center">No hay contactos agregados.</td></tr>';
+        } else {
+            
+            contacts.forEach((contact, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${contact.nombre}</td>
+                    <td>${contact.telefono}</td>
+                    <td>${contact.id}</td>
+                    <td>${contact.email}</td>
+                    <td>${contact.direccion}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editarContacto(${index})">Editar</button>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarContacto(${index})">Eliminar</button>
+                    </td>
+                `;
+                contactosLista.appendChild(row);
+            });
+        }
+    });
+
+    function eliminarContacto(index) {
+        const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+        contacts.splice(index, 1);  
+        localStorage.setItem('contacts', JSON.stringify(contacts));  
+        location.reload();  
+    }
+
+    
+    function editarContacto(index) {
+        window.location.href = `agregar_contacto.html?edit=${index}`;  
+    }
+</script>
+
+</body>
+</html>
+
+
+
