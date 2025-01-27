@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactos</title>
+    <link rel="stylesheet" href="css/perfilDeUsuarios.css">
+
+</head>
+<body>
+    <h2>Contactos</h2>
+    <div id="loginInfo"></div>
+
+    <script>
+        let logins = JSON.parse(localStorage.getItem("logins")) || [];
+
+        let loginInfoDiv = document.getElementById("loginInfo");
+        if (logins.length === 0) {
+            loginInfoDiv.innerHTML = "<p>No hay logins registrados.</p>";
+        } else {
+            logins.forEach((login, index) => {
+                loginInfoDiv.innerHTML += `
+                    <p>Login ${index + 1}:<br>
+                    Usuario: ${login.username}<br>
+                    Contraseña: ${login.password}<br>
+                    <button onclick="cerrarSesion(${index})">Cerrar sesión</button><hr>
+                `;
+            });
+        }
+
+        function cerrarSesion(index) {
+            logins.splice(index, 1);
+
+            localStorage.setItem("logins", JSON.stringify(logins));
+
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
+
+
+
